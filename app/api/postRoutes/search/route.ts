@@ -5,12 +5,10 @@ import { NextRequest } from "next/server";
 export async function GET(req: NextRequest) {
     let searchVal = req.nextUrl.searchParams.get("searchVal");
     if (searchVal === null || searchVal === undefined) {
-        searchVal = ''; // Default value if searchVal is null or undefined
+        searchVal = ''; 
     } else {
-        searchVal = searchVal.trim(); // Trim whitespace
+        searchVal = searchVal.trim();
     }
-
-    console.log("Search value:", searchVal);
 
     try {
         await connectToDB();
@@ -30,7 +28,6 @@ export async function GET(req: NextRequest) {
         //     { score: { $meta: "textScore" } }
         // ).sort({ score: { $meta: "textScore" } }).populate('creator');
 
-        console.log("Search results:", postsData);
         return new Response(JSON.stringify({ success: true, data: postsData }), { status: 200 });
     } catch (error) {
         console.error("Error:", error);

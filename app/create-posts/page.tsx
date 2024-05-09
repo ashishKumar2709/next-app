@@ -22,7 +22,6 @@ const CreatePosts = () => {
           userId: session?.user?.id
         })
       })
-      console.log(savePostResponse.json())
       if(savePostResponse.ok){
         router.push('/')
       }

@@ -12,11 +12,8 @@ interface Params{
 const UserProfilePage: React.FC<Params> = ({ params }) => {
     const searchParams = useSearchParams();
     const userName = searchParams.get('userName');
-    console.log(userName, params)
     const userProfileDesc = `Your viewing posts by ${userName}`;
   const [postData, setPostData] = useState<any>([]);
-
-  console.log('userId', params.userId);
 
   useEffect(() => {
     const fetchPosts = async () => {

@@ -11,7 +11,6 @@ const OwnerProfilePage: React.FC = () => {
   const { data: session }: any = useSession();
   const [postData, setPostData] = useState<any>([]);
   const handleEdit = (post: { _id: string }) => {
-    console.log(post._id)
     router.push(`/update-post?postId=${post._id}`);
   };
 
@@ -36,7 +35,6 @@ const OwnerProfilePage: React.FC = () => {
         method: "GET",
       });
       const fetchedData = await fetchResponse.json();
-      console.log(fetchedData);
       setPostData(fetchedData);
     };
     if (session?.user.id) fetchPosts();

@@ -28,13 +28,11 @@ const Posts = () => {
       method: "GET",
     });
     const fetchedData = await fetchResponse.json();
-    console.log(fetchedData);
     setPostsData(fetchedData);
   };
 
   const handleSearchChange = async (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    console.log(event.target.value);
     setSearchValue(event.target.value);
     if (event.target.value !== "") {
       const response = await fetch(
@@ -65,6 +63,7 @@ const Posts = () => {
 
   useEffect(() => {
     handleTagClick();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tagValue]);
 
   return (
