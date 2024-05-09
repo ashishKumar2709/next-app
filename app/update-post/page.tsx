@@ -24,14 +24,13 @@ const EditPostComponent = () => {
   ) => {
     event.preventDefault();
     try {
-      const response = await fetch(`/api/postRoutes/${postId}`, {
+      const editPostResponse = await fetch(`/api/postRoutes/${postId}`, {
         method: "PATCH",
         body: JSON.stringify({
           text: currentPost.text,
           tag: currentPost.tag,
         }),
       });
-      const editPostResponse = await response.json();
       if (editPostResponse.ok) {
         router.push("/");
       }
