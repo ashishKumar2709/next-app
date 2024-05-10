@@ -11,6 +11,7 @@ const RootLayout = ({ children }: any) => {
   return (
     <html lang="en">
       <body className="bg-gray-200 font-sans">
+        <link rel="icon" href="/Logo/favicon.ico" sizes="any" />
         <div>
           <Provider>
             <main>

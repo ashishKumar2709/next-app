@@ -1,18 +1,17 @@
 "use client";
 import Profile from "@components/Profile";
 import React, { useEffect, useState } from "react";
-import {  useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
-
-interface Params{
-    params:{
-        userId: string
-    }
+interface Params {
+  params: {
+    userId: string;
+  };
 }
 const UserProfilePage: React.FC<Params> = ({ params }) => {
-    const searchParams = useSearchParams();
-    const userName = searchParams.get('userName');
-    const userProfileDesc = `Your viewing posts by ${userName}`;
+  const searchParams = useSearchParams();
+  const userName = searchParams.get("userName");
+  const userProfileDesc = `You are viewing posts by ${userName}`;
   const [postData, setPostData] = useState<any>([]);
 
   useEffect(() => {
@@ -21,7 +20,6 @@ const UserProfilePage: React.FC<Params> = ({ params }) => {
         method: "GET",
       });
       const fetchedData = await fetchResponse.json();
-      console.log(fetchedData);
       setPostData(fetchedData);
     };
     if (params.userId) fetchPosts();
