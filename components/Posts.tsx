@@ -24,11 +24,11 @@ const Posts = () => {
   const [postsData, setPostsData] = useState([]);
   const [tagValue, setTagValue] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isClient, setIsClient] = useState(false)
- 
+  const [isClient, setIsClient] = useState(false);
+
   useEffect(() => {
-    setIsClient(true)
-  }, [])
+    setIsClient(true);
+  }, []);
   const fetchPosts = async () => {
     setLoading(true);
     try {
@@ -71,10 +71,8 @@ const Posts = () => {
   }, [tagValue]);
 
   const handleSearchChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    setTagValue("");
     setSearchValue(event.target.value);
     if (event.target.value !== "") {
-      setLoading(true);
       try {
         const response = await fetch(
           `/api/postRoutes/search?searchVal=${event.target.value}`
@@ -83,8 +81,6 @@ const Posts = () => {
         setPostsData(searchedPosts?.data);
       } catch (error) {
         console.error("Error searching posts:", error);
-      } finally {
-        setLoading(false);
       }
     } else {
       fetchPosts();
@@ -96,7 +92,7 @@ const Posts = () => {
       {loading ? (
         <div className="text-base font-bold m-8 flex h-screen">Loading....</div>
       ) : (
-       isClient && <div>
+        <div>
           {" "}
           <section>
             <form className="flex justify-center items-center p-4">
