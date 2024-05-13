@@ -71,6 +71,7 @@ const Posts = () => {
   }, [tagValue]);
 
   const handleSearchChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    setTagValue("");
     setSearchValue(event.target.value);
     if (event.target.value !== "") {
       try {
@@ -92,7 +93,7 @@ const Posts = () => {
       {loading ? (
         <div className="text-base font-bold m-8 flex h-screen">Loading....</div>
       ) : (
-        <div>
+        isClient && <div>
           {" "}
           <section>
             <form className="flex justify-center items-center p-4">
