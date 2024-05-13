@@ -24,28 +24,23 @@ const Posts = () => {
   const [postsData, setPostsData] = useState([]);
   const [tagValue, setTagValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isClient, setIsClient] = useState(false)
+ 
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   const fetchPosts = async () => {
     setLoading(true);
-    const fetchResponse = await fetch("/api/postRoutes", {
-      method: "GET",
-    });
-    const fetchedData = await fetchResponse.json();
-    setPostsData(fetchedData);
-    setLoading(false);
-  };
-
-  const handleSearchChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    setTagValue("");
-    event.preventDefault();
-    setSearchValue(event.target.value);
-    if (event.target.value !== "") {
-      const response = await fetch(
-        `/api/postRoutes/search?searchVal=${event.target.value}`
-      );
-      const searchedPosts = await response.json();
-      setPostsData(searchedPosts?.data);
-    } else {
-      fetchPosts();
+    try {
+      const fetchResponse = await fetch("/api/postRoutes", {
+        method: "GET",
+      });
+      const fetchedData = await fetchResponse.json();
+      setPostsData(fetchedData);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,11 +51,18 @@ const Posts = () => {
   useEffect(() => {
     const handleTagClick = async () => {
       if (tagValue !== "") {
-        const response = await fetch(
-          `/api/postRoutes/search?searchVal=${tagValue}`
-        );
-        const searchedPosts = await response.json();
-        setPostsData(searchedPosts?.data);
+        setLoading(true);
+        try {
+          const response = await fetch(
+            `/api/postRoutes/search?searchVal=${tagValue}`
+          );
+          const searchedPosts = await response.json();
+          setPostsData(searchedPosts?.data);
+        } catch (error) {
+          console.error("Error fetching tagged posts:", error);
+        } finally {
+          setLoading(false);
+        }
       } else {
         fetchPosts();
       }
@@ -68,12 +70,33 @@ const Posts = () => {
     handleTagClick();
   }, [tagValue]);
 
+  const handleSearchChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    setTagValue("");
+    setSearchValue(event.target.value);
+    if (event.target.value !== "") {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `/api/postRoutes/search?searchVal=${event.target.value}`
+        );
+        const searchedPosts = await response.json();
+        setPostsData(searchedPosts?.data);
+      } catch (error) {
+        console.error("Error searching posts:", error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      fetchPosts();
+    }
+  };
+
   return (
     <>
       {loading ? (
         <div className="text-base font-bold m-8 flex h-screen">Loading....</div>
       ) : (
-        <div>
+       isClient && <div>
           {" "}
           <section>
             <form className="flex justify-center items-center p-4">

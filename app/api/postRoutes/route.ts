@@ -16,7 +16,8 @@ export async function POST(
     await newPost.save();
     return Response.json('Post saved')
   } catch (error) {
-    return Response.json("Internal server error");
+    console.error(error)
+    return Response.json("Internal server error", { status: 500 });
   }
 };
 
@@ -26,6 +27,7 @@ export async function GET() {
     const postsData = await PostModel.find({}).populate("creator");
     return new Response(JSON.stringify(postsData), { status: 200 });
   } catch (error) {
+    console.error(error)
     return new Response("Internal server error", { status: 500 });
   }
 }

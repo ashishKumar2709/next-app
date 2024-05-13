@@ -49,7 +49,8 @@ const IdeaCard: React.FC<IdeaCardProps> = ({
 
   return (
     <div className="w-screen flex flex-col justify-center items-center gap-4">
-      <div className="flex flex-col p-4 border-0 border-solid border-gray-700 shadow-2xl rounded-md w-3/4 rounded bg-blue-50">
+      <div
+        className="flex flex-col p-4 border-0 border-solid border-gray-700 shadow-2xl rounded-md w-3/4 rounded bg-blue-50"      >
         <div className="flex justify-between">
           <div
             className="flex gap-4 cursor-pointer"
@@ -60,7 +61,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({
               alt="user_image"
               width="40"
               height="40"
-              className="rounded-md"
+              className="rounded-md w-auto h-auto"
             />
             <div className="flex flex-col m-0">
               <h3 className="text-base font-bold">
