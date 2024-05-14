@@ -34,7 +34,7 @@ const PostForm = (props: PostFormProps) => {
   return (
     <div className="flex justify-center ">
     <div 
-    className="m-4 border border-gray-400 border-solid w-3/4 p-4 bg-gray-400 rounded">
+    className="m-4 border border-gray-400 border-solid w-3/4 p-4 bg-gray-400 rounded" suppressHydrationWarning>
       <section>
         <h1 className="text-2xl font-semibold">{props.postType} Post</h1>
         <p className="text-base font-normal">{getDescription(props.postType)}</p>

@@ -23,12 +23,13 @@ const Posts = () => {
   const [searchValue, setSearchValue] = useState("");
   const [postsData, setPostsData] = useState([]);
   const [tagValue, setTagValue] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+  
   const fetchPosts = async () => {
     setLoading(true);
     try {
@@ -51,7 +52,6 @@ const Posts = () => {
   useEffect(() => {
     const handleTagClick = async () => {
       if (tagValue !== "") {
-        setLoading(true);
         try {
           const response = await fetch(
             `/api/postRoutes/search?searchVal=${tagValue}`
@@ -90,22 +90,22 @@ const Posts = () => {
 
   return (
     <>
+      <form className="flex justify-center items-center p-4">
+        <input
+          placeholder="Search tag and posts"
+          className="rounded-md p-0.5 border-gray-400 w-full"
+          type="search"
+          value={searchValue}
+          onChange={handleSearchChange}
+          required
+        />
+      </form>
       {loading ? (
         <div className="text-base font-bold m-8 flex h-screen">Loading....</div>
       ) : (
-        isClient && <div>
+        <div>
           {" "}
-          <section>
-            <form className="flex justify-center items-center p-4">
-              <input
-                placeholder="Search tag and posts"
-                className="rounded-md p-0.5 border-gray-400 w-1/2"
-                type="search"
-                value={searchValue}
-                onChange={handleSearchChange}
-                required
-              />
-            </form>
+          <div className="flex flex-col gap-4 w-full justify-center items-center mb-20">
             {tagValue !== "" && (
               <div className="flex justify-center items-center gap-4 p-2">
                 <div>{tagValue}</div>
@@ -126,9 +126,9 @@ const Posts = () => {
                 </div>
               </div>
             )}
-          </section>
-          <div className="flex flex-col gap-4 w-full justify-center items-center mb-20">
-            <IdeaCardList data={postsData} setTagValue={setTagValue} />
+            {isClient ? (
+              <IdeaCardList data={postsData} setTagValue={setTagValue} />
+            ) : null}
           </div>
         </div>
       )}

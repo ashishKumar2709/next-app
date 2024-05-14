@@ -9,6 +9,11 @@ const EditPostComponent = () => {
   const search = useSearchParams();
   const postId = search.get("postId");
   const [currentPost, setCurrentPost] = useState({ text: "", tag: "" });
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   useEffect(() => {
     const getCurrentPost = async () => {
       const getCurentPostResponse = await fetch(`/api/postRoutes/${postId}`);
@@ -40,12 +45,12 @@ const EditPostComponent = () => {
   };
   return (
     <>
-      <PostForm
+      {isClient?<PostForm
         postType="Edit"
         post={currentPost}
         setPost={setCurrentPost}
         handleSubmit={handleEdit}
-      />
+      />:null}
     </>
   );
 };

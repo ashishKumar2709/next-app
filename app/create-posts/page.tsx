@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import PostForm from "@components/PostForm";
 import { useRouter } from "next/navigation";
@@ -8,6 +8,12 @@ const CreatePosts = () => {
   const router = useRouter();
   const {data:session}:any = useSession();
   const [post, setPost] = useState({ text: "", tag: "" });
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const handleSubmit = async(event:React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault();
     try {
@@ -31,12 +37,12 @@ const CreatePosts = () => {
   };
   return (
     <>
-      <PostForm
+      {isClient?<PostForm
         postType="Create"
         post={post}
         setPost={setPost}
         handleSubmit={handleSubmit}
-      />
+      />:null}
     </>
   );
 };

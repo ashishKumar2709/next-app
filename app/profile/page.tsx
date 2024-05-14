@@ -10,6 +10,13 @@ const OwnerProfilePage: React.FC = () => {
   const router = useRouter();
   const { data: session }: any = useSession();
   const [postData, setPostData] = useState<any>([]);
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  
   const handleEdit = (post: { _id: string }) => {
     router.push(`/update-post?postId=${post._id}`);
   };
@@ -42,13 +49,13 @@ const OwnerProfilePage: React.FC = () => {
 
   return (
     <div>
-      <Profile
+      {isClient?<Profile
         profileType={"My"}
         desc={ownerProfileDesc}
         handleEdit={handleEdit}
         handleDelete={handleDelete}
         postData={postData}
-      />
+      />:null}
     </div>
   );
 };
