@@ -9,13 +9,17 @@ interface IdeaCardProps {
 }
 
 const IdeaCardList: React.FC<IdeaCardProps> = ({ data, setTagValue }) => {
-  const list = data?.map((cardDetails: any, index: number) => (
-    <IdeaCard
-      key={cardDetails._id}
-      postDetails={cardDetails}
-      setTagValue={setTagValue}
-    />
-  ));
+  const list = data?.map((cardDetails: any, index: number) => {
+    const tags = cardDetails.tag.split(',').map((tag:string)=>`${tag.trim()}`)
+    return (
+      <IdeaCard
+        key={cardDetails._id}
+        postDetails={cardDetails}
+        setTagValue={setTagValue}
+        tags={tags}
+      />
+    );
+  });
   return list;
 };
 
@@ -29,7 +33,7 @@ const Posts = () => {
   useEffect(() => {
     setIsClient(true);
   }, []);
-  
+
   const fetchPosts = async () => {
     setLoading(true);
     try {
@@ -37,6 +41,7 @@ const Posts = () => {
         method: "GET",
       });
       const fetchedData = await fetchResponse.json();
+      console.log(fetchedData);
       setPostsData(fetchedData);
     } catch (error) {
       console.error("Error fetching posts:", error);

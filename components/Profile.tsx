@@ -16,6 +16,7 @@ const Profile: React.FC<ProfilePropsType> = ({
   handleDelete,
   postData,
 }) => {
+  
   return (
     <>
     <div className="flex flex-col gap-4 w-full items-center mb-20">
@@ -25,20 +26,24 @@ const Profile: React.FC<ProfilePropsType> = ({
       <h1 className="capitalize text-2xl font-semibold">{profileType}&nbsp;Profile</h1>
       <p className="text-base font-normal">{desc}</p>
     </section>
-    {handleEdit && handleDelete ? postData?.map((post: any, index: number) => (
-      <IdeaCard
-        key={post._id}
-        postDetails={post}
-        handleEdit={()=>handleEdit(post)}
-        handleDelete={()=>handleDelete(post)}
-      />
-    )):
-    postData?.map((post: any, index: number) => (
-      <IdeaCard
-        key={post._id}
-        postDetails={post}
-      />
-    ))
+    {handleEdit && handleDelete ? postData?.map((post: any, index: number) => {
+      const tags = post.tag.split(',').map((tag:string)=>`${tag.trim()}`)
+      return <IdeaCard
+      key={post._id}
+      postDetails={post}
+      handleEdit={()=>handleEdit(post)}
+      handleDelete={()=>handleDelete(post)}
+      tags={tags}
+    />
+    }):
+    postData?.map((post: any, index: number) => {
+      const tags = post.tag.split(',').map((tag:string)=>`${tag.trim()}`)
+      return <IdeaCard
+      key={post._id}
+      postDetails={post}
+      tags={tags}
+    />
+    })
     }
   </div>
   </>
