@@ -20,6 +20,7 @@ interface IdeaCardProps {
   setTagValue?: (tagValue: string) => void;
   handleEdit?: () => void;
   handleDelete?: () => void;
+  tags: string[];
 }
 
 const IdeaCard: React.FC<IdeaCardProps> = ({
@@ -27,6 +28,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({
   handleEdit,
   handleDelete,
   setTagValue,
+  tags,
 }) => {
   const { data: session }: any = useSession();
   const pathname = usePathname();
@@ -49,8 +51,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({
 
   return (
     <div className="w-screen flex flex-col justify-center items-center gap-4">
-      <div
-        className="flex flex-col p-4 border-0 border-solid border-gray-700 shadow-2xl rounded-md w-3/4 rounded bg-blue-50"      >
+      <div className="flex flex-col p-4 border-0 border-solid border-gray-700 shadow-2xl rounded-md w-3/4 rounded bg-blue-50">
         <div className="flex justify-between">
           <div
             className="flex gap-4 cursor-pointer"
@@ -91,15 +92,20 @@ const IdeaCard: React.FC<IdeaCardProps> = ({
         </div>
 
         <p className="text-base font-normal text-black">{postDetails.post}</p>
-        <p
-          onClick={() => {
-            setTagValue && setTagValue(postDetails.tag);
-          }}
-          className="text-blue-400 cursor-pointer underline-offset-1"
-          title={`search ${postDetails.tag}`}
-        >
-          #{postDetails.tag}
-        </p>
+        <div className="flex">
+        {tags.map((tag: string) => (
+          <p
+            key={tag}
+            onClick={() => {
+              setTagValue && setTagValue(tag);
+            }}
+            className="text-blue-400 cursor-pointer underline-offset-1"
+            title={pathname === "/profile"?`tag`:`search ${tag}`}
+          >
+            &nbsp;#{tag}
+          </p>
+        ))} 
+        </div>
         {session?.user?.id === postDetails.creator._id &&
           pathname === "/profile" && (
             <div className="flex gap-4 self-end">

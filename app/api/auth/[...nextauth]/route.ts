@@ -3,8 +3,8 @@ import { connectToDB } from "@utils/database";
 import NextAuth, { DefaultSession, Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-const clientId = process.env.CLIENT_ID! || "";
-const clientSecret = process.env.GOOGLE_CLIENT_SECRET! || "";
+const clientId = process.env.CLIENT_ID! ?? "";
+const clientSecret = process.env.GOOGLE_CLIENT_SECRET! ?? "";
 
 const handler = NextAuth({
   providers: [
