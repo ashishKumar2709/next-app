@@ -1,9 +1,11 @@
 "use client";
-import Profile from "@components/Profile";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
+import dynamic from "next/dynamic";
+const Profile = dynamic(() => import("@components/Profile"), {
+  loading: () => <p>Loading...</p>,
+})
 const ownerProfileDesc = "Your own posts.";
 
 const OwnerProfilePage: React.FC = () => {
@@ -11,12 +13,6 @@ const OwnerProfilePage: React.FC = () => {
   const { data: session }: any = useSession();
   const [postData, setPostData] = useState<any>([]);
 
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-  
   const handleEdit = (post: { _id: string }) => {
     router.push(`/update-post?postId=${post._id}`);
   };
@@ -25,7 +21,7 @@ const OwnerProfilePage: React.FC = () => {
     try {
       const hasConfirmed = confirm("Are you sure you want to delete the post?");
       if (hasConfirmed) {
-        const deletePostResponse = await fetch(`/api/postRoutes/${post._id}`, {
+         await fetch(`/api/postRoutes/${post._id}`, {
           method: "DELETE",
         });
       }
@@ -49,13 +45,13 @@ const OwnerProfilePage: React.FC = () => {
 
   return (
     <div>
-      {isClient?<Profile
+      <Profile
         profileType={"My"}
         desc={ownerProfileDesc}
         handleEdit={handleEdit}
         handleDelete={handleDelete}
         postData={postData}
-      />:null}
+      />
     </div>
   );
 };

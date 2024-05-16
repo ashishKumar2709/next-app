@@ -28,7 +28,7 @@ export async function GET() {
     return new Response(JSON.stringify(postsData), { status: 200 });
   } catch (error) {
     console.error(error)
-    return new Response("Internal server error", { status: 500 });
+    return new Response(`Internal server error:${error}`, { status: 500 });
   }
 }
 

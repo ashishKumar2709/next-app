@@ -1,14 +1,25 @@
 import Head from 'next/head';
-import Nav from "@components/Nav";
-import Provider from "@components/Provider";
 import "@styles/global.css";
+import { ReactNode } from 'react';
+import dynamic from "next/dynamic";
+import NavSkeleton from '@components/NavSkeleton';
+const Nav = dynamic(() => import("@components/Nav"), {
+  loading: () => <NavSkeleton/>,
+})
+const Provider = dynamic(() => import("@components/Provider"), {
+  loading: () => <p>Loading...</p>,
+})
 
 export const metadata = {
   title: "next-app",
   description: "Learn and Share",
 };
 
-const RootLayout = ({ children }: any) => {
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+const RootLayout: React.FC<RootLayoutProps> = async({ children }) => {
   return (
     <html lang="en">
       <Head>
@@ -24,7 +35,7 @@ const RootLayout = ({ children }: any) => {
             {children}
           </main>
           <footer>
-            <p className='flex justify-center text-base, light p-4 mb-2'>
+            <p className='flex justify-center text-base light p-4 mb-2'>
               Learn & Share &copy; 2024
             </p>
           </footer>

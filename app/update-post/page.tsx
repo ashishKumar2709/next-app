@@ -1,10 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import PostForm from "@components/PostForm";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import dynamic from "next/dynamic";
 
-const EditPostComponent = () => {
+const PostForm = dynamic(() => import("@components/PostForm"), {
+  loading: () => <p>Loading...</p>,
+});
+
+const EditPostComponent:React.FC = () => {
   const router = useRouter();
   const search = useSearchParams();
   const postId = search.get("postId");
@@ -14,6 +18,7 @@ const EditPostComponent = () => {
   useEffect(() => {
     setIsClient(true);
   }, []);
+
   useEffect(() => {
     const getCurrentPost = async () => {
       const getCurentPostResponse = await fetch(`/api/postRoutes/${postId}`);

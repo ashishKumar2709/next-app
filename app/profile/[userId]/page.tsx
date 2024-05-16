@@ -1,7 +1,10 @@
 "use client";
-import Profile from "@components/Profile";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import dynamic from "next/dynamic";
+const Profile = dynamic(() => import("@components/Profile"), {
+  loading: () => <p>Loading...</p>,
+})
 
 interface Params {
   params: {

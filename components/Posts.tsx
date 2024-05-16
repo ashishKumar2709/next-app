@@ -1,7 +1,12 @@
 "use client";
 import React, { ChangeEvent, useEffect, useState } from "react";
-import IdeaCard from "./IdeaCard";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+import IdeaCardSkeleton from "./IdeaCardSkeleton";
+
+const IdeaCard = dynamic(() => import('./IdeaCard'), {
+  loading: () => <IdeaCardSkeleton/>,
+})
 
 interface IdeaCardProps {
   data: any[];
@@ -23,16 +28,11 @@ const IdeaCardList: React.FC<IdeaCardProps> = ({ data, setTagValue }) => {
   return list;
 };
 
-const Posts = () => {
+const Posts:React.FC = () => {
   const [searchValue, setSearchValue] = useState("");
   const [postsData, setPostsData] = useState([]);
   const [tagValue, setTagValue] = useState("");
   const [loading, setLoading] = useState(true);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -41,7 +41,6 @@ const Posts = () => {
         method: "GET",
       });
       const fetchedData = await fetchResponse.json();
-      console.log(fetchedData);
       setPostsData(fetchedData);
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -95,49 +94,48 @@ const Posts = () => {
 
   return (
     <>
-      <form className="flex justify-center items-center p-4">
-        <input
-          placeholder="Search tag and posts"
-          className="rounded-md p-0.5 border-gray-400 w-full"
-          type="search"
-          value={searchValue}
-          onChange={handleSearchChange}
-          required
-        />
-      </form>
-      {loading ? (
-        <div className="text-base font-bold m-8 flex h-screen">Loading....</div>
-      ) : (
-        <div>
-          {" "}
-          <div className="flex flex-col gap-4 w-full justify-center items-center mb-20">
-            {tagValue !== "" && (
-              <div className="flex justify-center items-center gap-4 p-2">
-                <div>{tagValue}</div>
-                <div
-                  className="cursor-pointer"
-                  onClick={() => {
-                    setTagValue("");
-                    fetchPosts();
-                  }}
-                  title="reset tag search"
-                >
-                  <Image
-                    src={"/icons/close_icon.png"}
-                    alt="cross icon"
-                    width={25}
-                    height={25}
-                  />
-                </div>
+    {loading ? (
+      <div className="text-base font-bold m-8 flex h-screen">Loading....</div>
+    ) : (
+      <div>
+        <section>
+          <form className="flex justify-center items-center p-4">
+            <input
+              placeholder="Search tag and posts"
+              className="rounded-md p-0.5 border-gray-400 w-1/2"
+              type="search"
+              value={searchValue}
+              onChange={handleSearchChange}
+              required
+            />
+          </form>
+          {tagValue && (
+            <div className="flex justify-center items-center gap-4 p-2">
+              <div>{tagValue}</div>
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  setTagValue("");
+                  fetchPosts();
+                }}
+                title="reset tag search"
+              >
+                <Image
+                  src={"/icons/close_icon.png"}
+                  alt="cross icon"
+                  width={25}
+                  height={25}
+                />
               </div>
-            )}
-            {isClient ? (
-              <IdeaCardList data={postsData} setTagValue={setTagValue} />
-            ) : null}
-          </div>
+            </div>
+          )}
+        </section>
+        <div className="flex flex-col gap-4 w-full justify-center items-center mb-20">
+          <IdeaCardList data={postsData} setTagValue={setTagValue} />
         </div>
-      )}
-    </>
+      </div>
+    )}
+  </>
   );
 };
 

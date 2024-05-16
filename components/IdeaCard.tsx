@@ -52,7 +52,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({
   return (
     <div className="w-screen flex flex-col justify-center items-center gap-4">
       <div className="flex flex-col p-4 border-0 border-solid border-gray-700 shadow-2xl rounded-md w-3/4 rounded bg-blue-50">
-        <div className="flex justify-between">
+        <div className="flex justify-between" suppressHydrationWarning>
           <div
             className="flex gap-4 cursor-pointer"
             onClick={handleProfileView}
@@ -91,20 +91,24 @@ const IdeaCard: React.FC<IdeaCardProps> = ({
           </div>
         </div>
 
-        <p className="text-base font-normal text-black">{postDetails.post}</p>
+        <p className="text-base font-normal text-black" suppressHydrationWarning>{postDetails.post}</p>
         <div className="flex">
-        {tags.map((tag: string) => (
-          <p
-            key={tag}
-            onClick={() => {
-              setTagValue && setTagValue(tag);
-            }}
-            className="text-blue-400 cursor-pointer underline-offset-1"
-            title={pathname === "/profile"?`tag`:`search ${tag}`}
-          >
-            &nbsp;#{tag}
-          </p>
-        ))} 
+          {tags.map((tag: string) => (
+            <p
+              key={tag}
+              onClick={() => {
+                setTagValue && setTagValue(tag);
+              }}
+              className={
+                pathname === "/profile"
+                  ? "text-blue-400"
+                  : "text-blue-400 cursor-pointer"
+              }
+              title={pathname === "/profile" ? `${tag}` : `search ${tag}`}
+            >
+              &nbsp;#{tag}
+            </p>
+          ))}
         </div>
         {session?.user?.id === postDetails.creator._id &&
           pathname === "/profile" && (

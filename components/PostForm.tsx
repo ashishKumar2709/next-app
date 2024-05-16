@@ -18,7 +18,7 @@ const getDescription = (type:string): string=>{
   }
 }
 
-const PostForm = (props: PostFormProps) => {
+const PostForm:React.FC<PostFormProps> = (props: PostFormProps) => {
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     props.setPost((pre: { text: string; tag: string }) => ({
       ...pre,

@@ -1,5 +1,11 @@
 import React from "react";
-import IdeaCard from "./IdeaCard";
+import dynamic from "next/dynamic";
+import IdeaCardSkeleton from "./IdeaCardSkeleton";
+
+const IdeaCard = dynamic(() => import('./IdeaCard'), {
+  loading: () => <IdeaCardSkeleton/>,
+})
+
 
 interface ProfilePropsType {
   profileType: string;
