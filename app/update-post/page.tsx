@@ -3,9 +3,10 @@ import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
+import PostFormSkeleton from "@components/PostFormSkeleton";
 
 const PostForm = dynamic(() => import("@components/PostForm"), {
-  loading: () => <p>Loading...</p>,
+  loading: () => <PostFormSkeleton/>,
 });
 
 const EditPostComponent:React.FC = () => {

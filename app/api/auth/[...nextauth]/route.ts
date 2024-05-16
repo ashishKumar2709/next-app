@@ -1,10 +1,14 @@
-import User from "@models/user";
+import UserModel from "@models/user";
 import { connectToDB } from "@utils/database";
 import NextAuth, { DefaultSession, Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-const clientId = process.env.CLIENT_ID! ?? "";
-const clientSecret = process.env.GOOGLE_CLIENT_SECRET! ?? "";
+const clientId = process.env.CLIENT_ID!;
+const clientSecret = process.env.GOOGLE_CLIENT_SECRET!;
+
+if (!clientId || !clientSecret) {
+  throw new Error("Missing Google client ID or secret");
+}
 
 const handler = NextAuth({
   providers: [
@@ -18,10 +22,10 @@ const handler = NextAuth({
       try {
         await connectToDB();
         //check if user exists
-        const userExists = await User.findOne({ email: profile?.email });
+        const userExists = await UserModel.findOne({ email: profile?.email });
         //create new user
         if (!userExists) {
-          await User.create({
+          await UserModel.create({
             email: profile?.email,
             userName: profile?.name?.replace(" ", "").toLowerCase(),
             image: profile?.picture,
@@ -34,7 +38,7 @@ const handler = NextAuth({
       }
     },
     async session({ session }): Promise<Session | DefaultSession> {
-        const sessionUser = await User.findOne({
+        const sessionUser = await UserModel.findOne({
           email: session?.user?.email
         });
 

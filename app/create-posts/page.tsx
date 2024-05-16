@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import PostFormSkeleton from "@components/PostFormSkeleton";
+
 const PostForm = dynamic(() => import("@components/PostForm"), {
-  loading: () => <p>Loading...</p>,
+  loading: () => <PostFormSkeleton/>,
 })
 
 const CreatePosts:React.FC = () => {
