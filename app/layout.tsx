@@ -2,9 +2,8 @@ import Head from 'next/head';
 import "@styles/global.css";
 import { ReactNode } from 'react';
 import dynamic from "next/dynamic";
-import NavSkeleton from '@components/NavSkeleton';
 const Nav = dynamic(() => import("@components/Nav"), {
-  loading: () => <NavSkeleton/>,
+  loading: () => <p>Loading...</p>,
 })
 const Provider = dynamic(() => import("@components/Provider"), {
   loading: () => <p>Loading...</p>,
