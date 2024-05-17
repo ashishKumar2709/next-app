@@ -3,11 +3,11 @@ import "@styles/global.css";
 import { ReactNode } from 'react';
 import dynamic from "next/dynamic";
 import NavSkeleton from '@components/NavSkeleton';
+import Provider from '@components/Provider';
+import { getServerSession } from "next-auth/next"
+
 const Nav = dynamic(() => import("@components/Nav"), {
   loading: () => <NavSkeleton/>,
-})
-const Provider = dynamic(() => import("@components/Provider"), {
-  loading: () => <p>Loading...</p>,
 })
 
 export const metadata = {
@@ -20,6 +20,7 @@ interface RootLayoutProps {
 }
 
 const RootLayout: React.FC<RootLayoutProps> = async({ children }) => {
+  const session:any = await getServerSession()
   return (
     <html lang="en">
       <Head>
@@ -27,7 +28,7 @@ const RootLayout: React.FC<RootLayoutProps> = async({ children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <body className="bg-gray-200 font-sans">
-        <Provider>
+        <Provider session={session}>
           <header>
             <Nav />
           </header>
