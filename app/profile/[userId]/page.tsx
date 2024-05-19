@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 const Profile = dynamic(() => import("@components/Profile"), {
   loading: () => <p>Loading...</p>,
-})
+});
 
 interface Params {
   params: {
@@ -16,6 +16,7 @@ const UserProfilePage: React.FC<Params> = ({ params }) => {
   const userName = searchParams.get("userName");
   const userProfileDesc = `You are viewing posts by ${userName}`;
   const [postData, setPostData] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -25,7 +26,7 @@ const UserProfilePage: React.FC<Params> = ({ params }) => {
       const fetchedData = await fetchResponse.json();
       setPostData(fetchedData);
     };
-    if (params.userId) fetchPosts();
+    if (params.userId) fetchPosts().then(() => setLoading(false));
   }, [params.userId]);
 
   return (
@@ -34,6 +35,7 @@ const UserProfilePage: React.FC<Params> = ({ params }) => {
         profileType={`${userName}'s`}
         desc={userProfileDesc}
         postData={postData}
+        loading={loading}
       />
     </div>
   );

@@ -14,6 +14,8 @@ const OwnerProfilePage: React.FC = () => {
   const router = useRouter();
   const [session, setSession] = useState<Session | null>(null);
   const [postData, setPostData] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const getUserSession = async () => {
       const dataS = await getSession();
@@ -21,6 +23,19 @@ const OwnerProfilePage: React.FC = () => {
     };
     getUserSession();
   }, []);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const fetchResponse = await fetch(`/api/userPosts/${session?.user?.id}`, {
+        method: "GET",
+      });
+      const fetchedData = await fetchResponse.json();
+      setPostData(fetchedData);
+    };
+    if (session?.user?.id) {
+      fetchPosts().then(() => setLoading(false));
+    }
+  }, [session?.user?.id]);
 
   const handleEdit = (post: { _id: string }) => {
     router.push(`/update-post?postId=${post._id}`);
@@ -43,19 +58,6 @@ const OwnerProfilePage: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const fetchResponse = await fetch(`/api/userPosts/${session?.user?.id}`, {
-        method: "GET",
-      });
-      const fetchedData = await fetchResponse.json();
-      setPostData(fetchedData);
-    };
-    if(session?.user?.id){
-      fetchPosts()
-    }
-  }, [session?.user?.id]);
-
   return (
     <div>
       <Profile
@@ -64,6 +66,7 @@ const OwnerProfilePage: React.FC = () => {
         handleEdit={handleEdit}
         handleDelete={handleDelete}
         postData={postData}
+        loading={loading}
       />
     </div>
   );
