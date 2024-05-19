@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import NavSkeleton from '@components/NavSkeleton';
 import Provider from '@components/Provider';
 import { getServerSession } from "next-auth/next"
+import { Session } from 'next-auth';
 
 const Nav = dynamic(() => import("@components/Nav"), {
   loading: () => <NavSkeleton/>,
@@ -20,7 +21,7 @@ interface RootLayoutProps {
 }
 
 const RootLayout: React.FC<RootLayoutProps> = async({ children }) => {
-  const session:any = await getServerSession()
+  const session:Session|null = await getServerSession()
   return (
     <html lang="en">
       <Head>

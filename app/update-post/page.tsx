@@ -43,7 +43,7 @@ const EditPostComponent:React.FC = () => {
         }),
       });
       if (editPostResponse.ok) {
-        router.push("/");
+        router.push("/profile");
       }
     } catch (error) {
       console.log(error);

@@ -1,7 +1,8 @@
-import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
+import { getSession, useSession } from "next-auth/react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface postDetailsType {
   creator: {
@@ -30,10 +31,19 @@ const IdeaCard: React.FC<IdeaCardProps> = ({
   setTagValue,
   tags,
 }) => {
-  const { data: session }: any = useSession();
+  const { status }: any = useSession();
   const pathname = usePathname();
   const router = useRouter();
   const [copiedPost, setCopiedPost] = useState("");
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    const getUserSession = async () => {
+      const dataS = await getSession();
+      setSession(dataS);
+    };
+    getUserSession();
+  }, []);
 
   const handleCopy = () => {
     setCopiedPost(postDetails.post);
@@ -42,12 +52,18 @@ const IdeaCard: React.FC<IdeaCardProps> = ({
   };
 
   const handleProfileView = () => {
-    if (postDetails.creator._id === session?.user.id)
-      return router.push("/profile");
-    router.push(
-      `/profile/${postDetails.creator._id}?userName=${postDetails.creator.userName}`
-    );
+    if (postDetails.creator._id === session?.user?.id) {
+      router.push("/profile");
+    } else {
+      router.push(
+        `/profile/${postDetails.creator._id}?userName=${postDetails.creator.userName}`
+      );
+    }
   };
+
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className="w-screen flex flex-col justify-center items-center gap-4">
@@ -91,7 +107,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({
           </div>
         </div>
 
-        <p className="text-base font-normal text-black" suppressHydrationWarning>{postDetails.post}</p>
+        <p className="text-base font-normal text-black">{postDetails.post}</p>
         <div className="flex">
           {tags.map((tag: string) => (
             <p

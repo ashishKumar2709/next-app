@@ -10,18 +10,27 @@ import {
   getProviders,
   LiteralUnion,
   ClientSafeProvider,
+  getSession,
 } from "next-auth/react";
 import { BuiltInProviderType } from "next-auth/providers/index";
 import { useRouter } from "next/navigation";
+import { Session } from "next-auth";
 
 const Nav: React.FC = () => {
   const router = useRouter();
-  const { data: session } = useSession();
   const [providers, setProviders] = useState<Record<
     LiteralUnion<BuiltInProviderType, string>,
     ClientSafeProvider
   > | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const [session, setSession] = useState<Session|null>(null)
+  useEffect(()=>{
+    const getUserSession = async()=>{
+      const dataS = await getSession()
+      setSession(dataS)
+    }
+    getUserSession()
+  },[])
   useEffect(() => {
     setIsClient(true);
   }, []);

@@ -27,6 +27,10 @@ const PostForm: React.FC<PostFormProps> = (props: PostFormProps) => {
   };
 
   const handleTagChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if( /\s/.test(event.target.value)){
+      alert('Please enter comma separated values for tags')
+      return
+    }
     props.setPost((prev: { text: string; tag: string }) => ({
       ...prev,
       tag: event.target.value,

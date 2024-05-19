@@ -1,9 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import PostFormSkeleton from "@components/PostFormSkeleton";
+import { Session } from "next-auth";
 
 const PostForm = dynamic(() => import("@components/PostForm"), {
   loading: () => <PostFormSkeleton/>,
@@ -11,8 +12,15 @@ const PostForm = dynamic(() => import("@components/PostForm"), {
 
 const CreatePosts:React.FC = () => {
   const router = useRouter();
-  const {data:session}:any = useSession();
   const [post, setPost] = useState({ text: "", tag: "" });
+  const [session, setSession] = useState<Session|null>(null)
+  useEffect(()=>{
+    const getUserSession = async()=>{
+      const dataS = await getSession()
+      setSession(dataS)
+    }
+    getUserSession()
+  },[])
 
   const handleSubmit = async(event:React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault();

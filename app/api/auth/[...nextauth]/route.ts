@@ -11,6 +11,7 @@ if (!clientId || !clientSecret) {
 }
 
 const handler = NextAuth({
+  secret: process.env.NEXTAUTH_SECRET!,
   providers: [
     GoogleProvider({
       clientId,
@@ -22,7 +23,7 @@ const handler = NextAuth({
       try {
         await connectToDB();
         //check if user exists
-        const userExists = await UserModel.findOne({ email: profile?.email });
+        const userExists = await UserModel.findOne({ email: profile.email });
         //create new user
         if (!userExists) {
           await UserModel.create({
@@ -38,18 +39,17 @@ const handler = NextAuth({
       }
     },
     async session({ session }): Promise<Session | DefaultSession> {
-        const sessionUser = await UserModel.findOne({
-          email: session?.user?.email
-        });
 
-        const userFromSession =  session.user as { 
-          name?: string | null | undefined; 
-          email?: string | null | undefined; 
-          image?: string | null | undefined;
-          id?: string;
-        };
-        userFromSession.id = sessionUser?._id.toString();
+      try {
+        await connectToDB();
+        const sessionUser = await UserModel.findOne({ email: session?.user?.email });
+        session.user.id = sessionUser._id.toString();
+          return session;
+      } catch (error) {
+        console.log("Error in session callback:", error);
         return session;
+      }
+ 
     
     }
     
