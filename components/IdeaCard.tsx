@@ -109,7 +109,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({
 
         <p className="text-base font-normal text-black">{postDetails.post}</p>
         <div className="flex">
-          {tags.map((tag: string) => (
+          {tags?.map((tag: string) => (
             <p
               key={tag}
               onClick={() => {

@@ -43,7 +43,7 @@ const Profile: React.FC<ProfilePropsType> = ({
     />
     }):
     postData?.map((post: any, index: number) => {
-      const tags = post.tag.split(',').map((tag:string)=>`${tag.trim()}`)
+      const tags = post.tag.split(',')?.map((tag:string)=>`${tag.trim()}`)
       return <IdeaCard
       key={post._id}
       postDetails={post}

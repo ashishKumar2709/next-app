@@ -96,14 +96,13 @@ const Nav: React.FC = () => {
         ) : (
           <>
             {providers &&
-              Object.values(providers).map((provider: any) => (
+              Object.values(providers)?.map((provider: any) => (
                 <button
                   key={provider?.name}
                   onClick={(e) => {
-                    signIn(provider.id);
+                    signIn(provider.id, { callbackUrl: '/' });
                   }}
                   className="px-4 py-2 bg-green-500 text-white rounded-md shadow-md transition ease-out duration-100 transform"
-                  suppressHydrationWarning={true}
                 >
                   Sign In
                 </button>
