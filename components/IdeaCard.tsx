@@ -68,7 +68,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({
   return (
     <div className="w-screen flex flex-col justify-center items-center gap-4">
       <div className="flex flex-col p-4 border-0 border-solid border-gray-700 shadow-2xl rounded-md w-3/4 rounded bg-blue-50">
-        <div className="flex justify-between" suppressHydrationWarning>
+        <div className="flex justify-between items-start" suppressHydrationWarning>
           <div
             className="flex gap-4 cursor-pointer"
             onClick={handleProfileView}
@@ -91,7 +91,7 @@ const IdeaCard: React.FC<IdeaCardProps> = ({
           </div>
           <div
             onClick={handleCopy}
-            className="cusrsor-pointer self-end"
+            className="cusrsor-pointer"
             title="Copy post"
           >
             <Image

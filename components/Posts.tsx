@@ -15,7 +15,7 @@ interface IdeaCardProps {
 
 const IdeaCardList: React.FC<IdeaCardProps> = ({ data, setTagValue }) => {
   const list = data?.map((cardDetails: any, index: number) => {
-    const tags = cardDetails.tag.split(',')?.map((tag:string)=>`${tag.trim()}`)
+    const tags = cardDetails?.tag?.split(',')?.map((tag:string)=>`${tag.trim()}`)
     return (
       <IdeaCard
         key={cardDetails._id}

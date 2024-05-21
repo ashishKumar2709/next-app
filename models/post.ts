@@ -1,4 +1,5 @@
 import mongoose, { model, models } from "mongoose";
+import "./user";
 
 const postSchema = new mongoose.Schema({
   creator: {
@@ -15,7 +16,6 @@ const postSchema = new mongoose.Schema({
   },
 });
 
-postSchema.index({ post: 'text', tag: 'text', 'creator.userName': 'text' });
 
 const PostModel = models.Post || model("Post", postSchema);
 
