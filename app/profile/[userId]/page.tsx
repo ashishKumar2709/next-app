@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 const Profile = dynamic(() => import("@components/Profile"), {
-  loading: () => <p>Loading...</p>,
+  loading: () => <p className="text-base font-bold m-8 flex h-screen">Loading...</p>,
 });
 
 interface Params {

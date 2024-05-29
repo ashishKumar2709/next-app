@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import { Session } from "next-auth";
 
 const Profile = dynamic(() => import("@components/Profile"), {
-  loading: () => <p>Loading...</p>,
+  loading: () => <p className="text-base font-bold m-8 flex h-screen">Loading...</p>,
 });
 const ownerProfileDesc = "Your own posts.";
 
@@ -14,9 +14,10 @@ const OwnerProfilePage: React.FC = () => {
   const router = useRouter();
   const [session, setSession] = useState<Session | null>(null);
   const [postData, setPostData] = useState<any>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true)
     const getUserSession = async () => {
       const dataS = await getSession();
       setSession(dataS);

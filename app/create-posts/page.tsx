@@ -14,6 +14,7 @@ const CreatePosts:React.FC = () => {
   const router = useRouter();
   const [post, setPost] = useState({ text: "", tag: "" });
   const [session, setSession] = useState<Session|null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   useEffect(()=>{
     const getUserSession = async()=>{
       const dataS = await getSession()
@@ -25,6 +26,7 @@ const CreatePosts:React.FC = () => {
   const handleSubmit = async(event:React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault();
     try {
+      setIsSubmitting(true)
       const savePostResponse = await fetch('/api/postRoutes',{
         method:'POST',
         headers: {
@@ -37,6 +39,7 @@ const CreatePosts:React.FC = () => {
         })
       })
       if(savePostResponse.ok){
+        setIsSubmitting(false)
         router.push('/')
       }
     } catch (error) {
@@ -50,6 +53,7 @@ const CreatePosts:React.FC = () => {
         post={post}
         setPost={setPost}
         handleSubmit={handleSubmit}
+        isSubmitting={isSubmitting}
       />
     </>
   );

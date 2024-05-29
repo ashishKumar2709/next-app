@@ -6,6 +6,7 @@ interface PostFormProps {
   post: { text: string; tag: string };
   setPost: Dispatch<SetStateAction<{ text: string; tag: string }>>;
   handleSubmit: React.MouseEventHandler<HTMLElement>;
+  isSubmitting?: boolean
 }
 
 const getDescription = (type: string): string => {
@@ -69,7 +70,7 @@ const PostForm: React.FC<PostFormProps> = (props: PostFormProps) => {
             <Link href="/" className="px-4 py-2 bg-gray-200 text-black rounded-md shadow-md transition ease-out duration-100 transform">
               Cancel
             </Link>
-            <button onClick={props.handleSubmit} className="px-4 py-2 bg-green-200 text-black rounded-md shadow-md transition ease-out duration-100 transform">
+            <button onClick={props.handleSubmit} disabled={props.isSubmitting} className="px-4 py-2 bg-green-200 text-black rounded-md shadow-md transition ease-out duration-100 transform">
               {props.postType}
             </button>
           </div>

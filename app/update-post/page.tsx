@@ -15,6 +15,8 @@ const EditPostComponent:React.FC = () => {
   const postId = search.get("postId");
   const [currentPost, setCurrentPost] = useState({ text: "", tag: "" });
   const [isClient, setIsClient] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   useEffect(() => {
     setIsClient(true);
@@ -35,6 +37,7 @@ const EditPostComponent:React.FC = () => {
   ) => {
     event.preventDefault();
     try {
+      setIsSubmitting(true)
       const editPostResponse = await fetch(`/api/postRoutes/${postId}`, {
         method: "PATCH",
         body: JSON.stringify({
@@ -47,6 +50,8 @@ const EditPostComponent:React.FC = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsSubmitting(false)
     }
   };
   return (
@@ -56,6 +61,7 @@ const EditPostComponent:React.FC = () => {
         post={currentPost}
         setPost={setCurrentPost}
         handleSubmit={handleEdit}
+        isSubmitting={isSubmitting}
       />:null}
     </>
   );
