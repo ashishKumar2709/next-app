@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
                     { "creator.userName": { $regex: new RegExp(searchVal, "i") } }
                 ]
             },
-          ).populate('creator');
+          ).populate('creator').sort({'updatedAt':-1});
 
         // const postsData = await PostModel.find(
         //     { $text: { $search: searchVal } },

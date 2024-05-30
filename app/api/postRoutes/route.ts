@@ -24,7 +24,7 @@ export async function POST(
 export async function GET() {
   try {
     await connectToDB();
-    const postsData = await PostModel.find({}).populate("creator");
+    const postsData = await PostModel.find({}).populate("creator").sort({'updatedAt':-1});
     return new Response(JSON.stringify(postsData), { status: 200 });
   } catch (error) {
     console.error(error)

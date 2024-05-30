@@ -10,7 +10,7 @@ export async function GET(request: Request, context: { params: Params }) {
     await connectToDB();
     const userPost = await PostModel.findById(context.params.postId).populate(
       "creator"
-    );
+    ).sort({'updatedAt':-1});
     if (!userPost) return new Response("Prompt not Found", { status: 404 });
     return new Response(JSON.stringify(userPost), { status: 200 });
   } catch (error) {
